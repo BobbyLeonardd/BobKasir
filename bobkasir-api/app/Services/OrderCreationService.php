@@ -36,7 +36,8 @@ class OrderCreationService
         ?string $role,
         ?string $outletId,
         ?string $deviceId,
-        ?string $ipAddress = null
+        ?string $ipAddress = null,
+        bool $isOnline = false
     ): array {
         // ── Idempotency guard (PRD §26.5) ──────────────────────────────
         $localOrderId = $data['local_order_id'] ?? null;
@@ -58,7 +59,7 @@ class OrderCreationService
 
         return DB::transaction(function () use (
             $data, $user, $businessId, $role, $outletId, $deviceId,
-            $ipAddress, $localOrderId, $rawItems, $rawPayments
+            $ipAddress, $localOrderId, $rawItems, $rawPayments, $isOnline
         ) {
             // ── Recompute item lines from authoritative product prices ──
             $items    = [];
@@ -111,6 +112,13 @@ class OrderCreationService
             $taxTotal     = (int) round($taxableBase * $taxRate / 100);
             $serviceTotal = (int) round($taxableBase * $serviceRate / 100);
             $grandTotal   = max(0, $subtotal - $discountTotal + $taxTotal + $serviceTotal);
+
+            if ($isOnline && isset($data['grand_total'])) {
+                $clientGrandTotal = (int) $data['grand_total'];
+                if ($clientGrandTotal !== $grandTotal) {
+                    throw new \Exception('Harga produk atau pajak telah berubah. Silakan muat ulang menu Kasir.', 409);
+                }
+            }
 
             // ── Payments (server-recomputed paid/change) ───────────────
             $payments   = [];

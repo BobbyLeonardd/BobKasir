@@ -89,6 +89,7 @@ class OrderController extends Controller
                 $request->get('_outlet_id'),
                 $request->device_id,
                 $request->ip(),
+                true
             );
 
             return $this->success(
@@ -99,6 +100,9 @@ class OrderController extends Controller
                 $result['duplicate'] ? 200 : 201
             );
         } catch (\Exception $e) {
+            if ($e->getCode() === 409) {
+                return $this->error($e->getMessage(), 409);
+            }
             return $this->error('Gagal menyimpan transaksi: ' . $e->getMessage(), 500);
         }
     }
