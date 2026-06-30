@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="BobKasir — Aplikasi POS / Kasir multi-tenant modern dengan sistem offline-first, openbill, split bill, dan cetak struk Bluetooth. Cocok untuk kedai kopi dan makanan.">
+  <title>BobKasir — Aplikasi POS/Kasir Kedai Kopi & Makanan Modern</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="navbar">
+    <div class="container navbar-container">
+      <div class="logo">
+        <span class="logo-icon">🍵</span>
+        <span class="logo-text">Bob<span>Kasir</span></span>
+      </div>
+      <nav class="nav-links">
+        <a href="#fitur">Fitur</a>
+        <a href="#demo">Demo Interaktif</a>
+        <a href="#kalkulator">Kalkulator</a>
+        <a href="#harga">Harga</a>
+      </nav>
+      <div class="nav-cta">
+        <a href="#harga" class="btn btn-primary btn-sm">Coba 7 Hari Gratis</a>
+      </div>
+      <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Menu Drawer -->
+  <div class="mobile-drawer" id="mobileDrawer">
+    <nav class="mobile-nav-links">
+      <a href="#fitur">Fitur</a>
+      <a href="#demo">Demo Interaktif</a>
+      <a href="#kalkulator">Kalkulator</a>
+      <a href="#harga">Harga</a>
+      <a href="#harga" class="btn btn-primary">Coba 7 Hari Gratis</a>
+    </nav>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container hero-container">
+      <div class="hero-content">
+        <div class="hero-badge">✨ Dipercaya Oleh 100+ Pemilik Kedai</div>
+        <h1 class="hero-title">Kelola Kedai Lebih Cepat, Bahkan Saat <span>Offline</span></h1>
+        <p class="hero-subtitle">BobKasir adalah aplikasi POS multi-tenant premium yang dirancang khusus untuk kedai kopi dan makanan. Transaksi tetap lancar tanpa hambatan, sinkron otomatis saat internet kembali.</p>
+        <div class="hero-actions">
+          <a href="#harga" class="btn btn-primary">Coba Gratis 7 Hari</a>
+          <a href="#demo" class="btn btn-secondary">Lihat Demo</a>
+        </div>
+        <div class="hero-features-preview">
+          <div class="preview-item">✓ Tanpa Kontrak</div>
+          <div class="preview-item">✓ Support Bluetooth Printer</div>
+          <div class="preview-item">✓ Split Bill Mudah</div>
+        </div>
+      </div>
+      <div class="hero-media">
+        <div class="mockup-frame">
+          <div class="mockup-header">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="mockup-address">bobkasir.app/demo</div>
+          </div>
+          <div class="mockup-screen-hero">
+            <!-- Simulated App Dashboard -->
+            <div class="app-sidebar-sim">
+              <div class="app-logo-sim">🍵</div>
+              <div class="app-menu-sim active"></div>
+              <div class="app-menu-sim"></div>
+              <div class="app-menu-sim"></div>
+            </div>
+            <div class="app-body-sim">
+              <div class="app-header-sim">
+                <span class="app-title-sim">Ringkasan Hari Ini</span>
+                <span class="app-status-sim online">● Online</span>
+              </div>
+              <div class="app-stats-sim">
+                <div class="stat-card-sim">
+                  <span class="stat-label-sim">Omzet Hari Ini</span>
+                  <span class="stat-value-sim">Rp 1.250.000</span>
+                  <span class="stat-change-sim positive">↑ 12.5%</span>
+                </div>
+                <div class="stat-card-sim">
+                  <span class="stat-label-sim">Transaksi</span>
+                  <span class="stat-value-sim">42 Trx</span>
+                  <span class="stat-change-sim positive">↑ 4 order baru</span>
+                </div>
+              </div>
+              <div class="app-chart-sim">
+                <div class="chart-title-sim">Tren Omzet Mingguan</div>
+                <div class="chart-bars-sim">
+                  <div class="chart-bar-sim" style="--height: 40%"><span>Sen</span></div>
+                  <div class="chart-bar-sim" style="--height: 55%"><span>Sel</span></div>
+                  <div class="chart-bar-sim" style="--height: 35%"><span>Rab</span></div>
+                  <div class="chart-bar-sim" style="--height: 70%"><span>Kam</span></div>
+                  <div class="chart-bar-sim" style="--height: 85%"><span>Jum</span></div>
+                  <div class="chart-bar-sim" style="--height: 95%"><span>Sab</span></div>
+                  <div class="chart-bar-sim" style="--height: 60%"><span>Min</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="fitur" class="features">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Fitur Unggulan untuk Produktivitas Kedai Anda</h2>
+        <p class="section-subtitle">Dibuat dengan arsitektur modern untuk memastikan operasional kasir tetap berjalan cepat tanpa hambatan jaringan.</p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Feature 1: Offline Mode -->
+        <div class="feature-card">
+          <div class="feature-icon bg-amber">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.288 15.038a5.25 5.25 0 0 1 7.424 0M5.106 11.856c3.807-3.808 9.98-3.808 13.788 0M1.924 8.674c5.465-5.466 14.687-5.466 20.152 0M12.53 18.22l-.53.53-.53-.53a.75.75 0 0 1 1.06 0Z" />
+            </svg>
+          </div>
+          <h3 class="feature-name">Kasir Tetap Jalan Saat Offline</h3>
+          <p class="feature-desc">Mati lampu atau jaringan internet terputus? Jangan khawatir. Simpan transaksi di database lokal Drift, cetak struk lokal, dan data otomatis disinkronkan ke server setelah online kembali.</p>
+        </div>
+
+        <!-- Feature 2: Openbill & Reservation -->
+        <div class="feature-card">
+          <div class="feature-icon bg-amber">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+            </svg>
+          </div>
+          <h3 class="feature-name">Openbill & Reservasi Meja</h3>
+          <p class="feature-desc">Pesan sekarang, bayar nanti. Kelola pesanan per meja secara dinamis. Anda juga dapat mencatat reservasi pelanggan lengkap dengan jam kedatangan, nomor meja, dan catatan khusus.</p>
+        </div>
+
+        <!-- Feature 3: Split Bill -->
+        <div class="feature-card">
+          <div class="feature-icon bg-amber">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z" />
+            </svg>
+          </div>
+          <h3 class="feature-name">Pembayaran Split Bill Fleksibel</h3>
+          <p class="feature-desc">Pelanggan ingin membagi tagihan? Pisahkan pembayaran dalam satu pesanan menggunakan kombinasi Tunai, QRIS, Debit, maupun E-Wallet dengan validasi otomatis.</p>
+        </div>
+
+        <!-- Feature 4: Bluetooth Printer & Cash Drawer -->
+        <div class="feature-card">
+          <div class="feature-icon bg-amber">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6.72 19.164h10.56M16.5 16.5v3.375a1.125 1.125 0 0 1-1.125 1.125h-6.75a1.125 1.125 0 0 1-1.125-1.125V16.5m9-3h-9M18 10.5h.008v.008H18V10.5Zm-3 0h.008v.008H15V10.5Z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 16.5h16.5a1.5 1.5 0 0 0 1.5-1.5V9a3 3 0 0 0-3-3h-15A3 3 0 0 0 1.5 9v6a1.5 1.5 0 0 0 1.5 1.5Z" />
+            </svg>
+          </div>
+          <h3 class="feature-name">Integrasi Printer & Cash Drawer</h3>
+          <p class="feature-desc">Mendukung printer struk Bluetooth ESC/POS ukuran 58mm & 80mm secara umum. Buka cash drawer otomatis saat pembayaran tunai dikonfirmasi menggunakan RJ11 kick command.</p>
+        </div>
+
+        <!-- Feature 5: Tenant Isolation & Multi-Device -->
+        <div class="feature-card">
+          <div class="feature-icon bg-amber">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
+            </svg>
+          </div>
+          <h3 class="feature-name">Isolasi Data Super Aman</h3>
+          <p class="feature-desc">Mendukung banyak perangkat aktif bersamaan untuk satu kedai. Keamanan data terjamin dengan Laravel Sanctum, enkripsi token sensitif, dan isolasi tenant tingkat database.</p>
+        </div>
+
+        <!-- Feature 6: Dashboard Laporan Real-time -->
+        <div class="feature-card">
+          <div class="feature-icon bg-amber">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z" />
+            </svg>
+          </div>
+          <h3 class="feature-name">Laporan & Komparasi Grafik</h3>
+          <p class="feature-desc">Pantau omzet harian, mingguan, hingga tahunan dengan komparasi persentase. Unduh laporan dalam format gambar, PDF, maupun Excel, atau cetak ringkasan langsung via printer Bluetooth.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Demo Showcase -->
+  <section id="demo" class="demo-showcase">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Eksplorasi Antarmuka BobKasir</h2>
+        <p class="section-subtitle">Lihat bagaimana BobKasir dirancang untuk kesederhanaan operasional kedai kopi Anda melalui simulator interaktif di bawah.</p>
+      </div>
+
+      <div class="demo-switcher">
+        <button class="switcher-btn active" data-target="kasir-phone" id="btn-kasir-phone">Kasir (Mobile)</button>
+        <button class="switcher-btn" data-target="kasir-tablet" id="btn-kasir-tablet">Kasir (Tablet)</button>
+        <button class="switcher-btn" data-target="dashboard-tab" id="btn-dashboard">Dashboard Owner</button>
+      </div>
+
+      <div class="demo-content-wrapper">
+        <!-- Phone View Simulator -->
+        <div class="demo-view active" id="kasir-phone">
+          <div class="device-phone">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <div class="phone-app-header">
+                <span class="shop-name">☕ Kedai Kopi Bob</span>
+                <div class="phone-icons">
+                  <span class="badge-icon" data-badge="2">🛒</span>
+                  <span class="status-dot green"></span>
+                </div>
+              </div>
+              <div class="phone-categories">
+                <span class="category-chip active">Semua</span>
+                <span class="category-chip">Klasik Kopi</span>
+                <span class="category-chip">Non-Kopi</span>
+                <span class="category-chip">Makanan</span>
+              </div>
+              <div class="phone-product-grid">
+                <div class="phone-prod-card">
+                  <div class="prod-img-placeholder">Matcha Latte</div>
+                  <div class="prod-info">
+                    <span class="prod-name">Matcha Latte</span>
+                    <span class="prod-price">Rp 25.000</span>
+                  </div>
+                </div>
+                <div class="phone-prod-card">
+                  <div class="prod-img-placeholder">Americano</div>
+                  <div class="prod-info">
+                    <span class="prod-name">Americano</span>
+                    <span class="prod-price">Rp 20.000</span>
+                  </div>
+                </div>
+                <div class="phone-prod-card">
+                  <div class="prod-img-placeholder">C. Macchiato</div>
+                  <div class="prod-info">
+                    <span class="prod-name">Caramel Macchiato</span>
+                    <span class="prod-price">Rp 28.000</span>
+                  </div>
+                </div>
+                <div class="phone-prod-card sold-out">
+                  <div class="prod-img-placeholder">Croissant</div>
+                  <div class="prod-info">
+                    <span class="prod-name">Croissant</span>
+                    <span class="prod-price">Rp 18.000</span>
+                    <span class="badge-sold-out">HABIS</span>
+                  </div>
+                </div>
+              </div>
+              <div class="phone-cart-bar">
+                <span>🛒 2 Item  •  Rp 45.000</span>
+                <span class="checkout-arrow">Checkout →</span>
+              </div>
+            </div>
+          </div>
+          <div class="view-description">
+            <h3>Tampilan Kasir (Handset)</h3>
+            <p>Dirancang untuk penggunaan satu tangan. Keranjang belanja disimpan di *bottom sheet* bawah layar sehingga tidak memakan ruang katalog produk. Kategori dapat di-swipe secara horizontal.</p>
+            <ul class="view-list">
+              <li>Grid produk 2 kolom yang informatif dan bersih.</li>
+              <li>Akses cepat ke detail pesanan dengan men-tap cart bar bawah.</li>
+              <li>Penanda produk habis (stok 0) yang terlihat jelas.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Tablet View Simulator -->
+        <div class="demo-view" id="kasir-tablet">
+          <div class="device-tablet">
+            <div class="tablet-screen">
+              <div class="tablet-sidebar">
+                <div class="tablet-nav-item active">Kasir</div>
+                <div class="tablet-nav-item">Riwayat</div>
+                <div class="tablet-nav-item">Dashboard</div>
+                <div class="tablet-nav-item">Pengaturan</div>
+              </div>
+              <div class="tablet-content">
+                <div class="tablet-catalog">
+                  <div class="tablet-catalog-header">
+                    <h2>Katalog Menu</h2>
+                    <div class="tablet-categories">
+                      <span class="tab-chip active">Semua</span>
+                      <span class="tab-chip">Kopi</span>
+                      <span class="tab-chip">Non-Kopi</span>
+                    </div>
+                  </div>
+                  <div class="tablet-grid">
+                    <div class="tab-prod-card">
+                      <div class="tab-prod-placeholder">🍵</div>
+                      <h4>Matcha Latte</h4>
+                      <p>Rp 25.000</p>
+                    </div>
+                    <div class="tab-prod-card">
+                      <div class="tab-prod-placeholder">☕</div>
+                      <h4>Americano</h4>
+                      <p>Rp 20.000</p>
+                    </div>
+                    <div class="tab-prod-card">
+                      <div class="tab-prod-placeholder">🥛</div>
+                      <h4>Caramel Macchiato</h4>
+                      <p>Rp 28.000</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="tablet-cart">
+                  <h3>Keranjang Belanja</h3>
+                  <div class="cart-items-sim">
+                    <div class="cart-item-sim">
+                      <span>Matcha Latte x1</span>
+                      <span>Rp 25.000</span>
+                    </div>
+                    <div class="cart-item-sim">
+                      <span>Americano x1</span>
+                      <span>Rp 20.000</span>
+                    </div>
+                  </div>
+                  <div class="cart-total-sim">
+                    <span>Total</span>
+                    <span>Rp 45.000</span>
+                  </div>
+                  <div class="cart-actions-sim">
+                    <button class="btn-sim-ghost">Openbill</button>
+                    <button class="btn-sim-primary">Checkout</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="view-description">
+            <h3>Tampilan Kasir (Tablet Landscape)</h3>
+            <p>Memanfaatkan layar lebar secara maksimal. Katalog produk di sebelah kiri dan keranjang belanja interaktif di sebelah kanan (fixed) sehingga kasir dapat melakukan checkout dalam hitungan detik.</p>
+            <ul class="view-list">
+              <li>Navigasi vertikal (Navigation Rail) di sisi kiri untuk berpindah modul secara cepat.</li>
+              <li>Aksi Openbill & Checkout langsung tanpa perlu membuka drawer/bottom sheet tambahan.</li>
+              <li>Sangat cocok untuk dipasang di meja kasir utama kedai Anda.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Dashboard View Simulator -->
+        <div class="demo-view" id="dashboard-tab">
+          <div class="device-tablet">
+            <div class="tablet-screen dashboard-screen">
+              <div class="tablet-sidebar">
+                <div class="tablet-nav-item">Kasir</div>
+                <div class="tablet-nav-item">Riwayat</div>
+                <div class="tablet-nav-item active">Dashboard</div>
+                <div class="tablet-nav-item">Pengaturan</div>
+              </div>
+              <div class="tablet-content dashboard-content-sim">
+                <div class="dash-header-sim">
+                  <h2>Dashboard Analitik</h2>
+                  <div class="dash-range-sim">Hari ini vs Kemarin</div>
+                </div>
+                <div class="dash-cards-sim">
+                  <div class="dash-card-sim">
+                    <span>Total Pendapatan</span>
+                    <h3>Rp 1.250.000</h3>
+                    <p class="positive">↑ 12% dari kemarin</p>
+                  </div>
+                  <div class="dash-card-sim">
+                    <span>Total Transaksi</span>
+                    <h3>42 Trx</h3>
+                    <p class="positive">↑ 8% dari kemarin</p>
+                  </div>
+                  <div class="dash-card-sim">
+                    <span>Rata-rata Keranjang</span>
+                    <h3>Rp 29.700</h3>
+                    <p class="negative">↓ 2% dari kemarin</p>
+                  </div>
+                </div>
+                <div class="dash-chart-full">
+                  <h4>Statistik Penjualan Hari Ini</h4>
+                  <div class="sim-line-chart">
+                    <div class="chart-point" style="bottom: 20%; left: 10%;"></div>
+                    <div class="chart-point" style="bottom: 40%; left: 30%;"></div>
+                    <div class="chart-point" style="bottom: 30%; left: 50%;"></div>
+                    <div class="chart-point" style="bottom: 75%; left: 70%;"></div>
+                    <div class="chart-point" style="bottom: 90%; left: 90%;"></div>
+                    <svg class="chart-line-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+                      <polyline fill="none" stroke="#C8892A" stroke-width="2" points="10,80 30,60 50,70 70,25 90,10" />
+                    </svg>
+                  </div>
+                  <div class="chart-labels-bottom">
+                    <span>08:00</span>
+                    <span>11:00</span>
+                    <span>14:00</span>
+                    <span>17:00</span>
+                    <span>20:00</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="view-description">
+            <h3>Dashboard Laporan Owner</h3>
+            <p>Khusus untuk Owner dan Admin Kedai. Menyajikan data omzet, jumlah transaksi, hingga produk terlaris secara visual. Membantu Anda mengambil keputusan bisnis secara presisi.</p>
+            <ul class="view-list">
+              <li>Komparasi performa omzet otomatis (hari ini vs kemarin, minggu ini vs minggu lalu).</li>
+              <li>Grafik tren dinamis berbasis data transaksi riil.</li>
+              <li>Ekspor laporan ke PDF, Excel, atau cetak ke printer Bluetooth dalam sekali tekan.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefit Calculator Section -->
+  <section id="kalkulator" class="calculator-section">
+    <div class="container calculator-container">
+      <div class="calculator-text">
+        <h2 class="section-title">Berapa Banyak Waktu & Tenaga yang Bisa Anda Hemat?</h2>
+        <p>Gunakan kalkulator simulasi di bawah untuk mengukur penghematan kerja administrasi bulanan kedai Anda setelah beralih ke BobKasir.</p>
+        
+        <div class="calc-inputs">
+          <div class="input-group-calc">
+            <label for="range-omzet">Estimasi Omzet Harian Kedai: <span id="val-omzet">Rp 1.500.000</span></label>
+            <input type="range" id="range-omzet" min="500000" max="10000000" step="500000" value="1500000">
+          </div>
+          <div class="input-group-calc">
+            <label for="range-kasir">Jumlah Staf/Kasir Aktif: <span id="val-kasir">2 Orang</span></label>
+            <input type="range" id="range-kasir" min="1" max="10" step="1" value="2">
+          </div>
+        </div>
+      </div>
+      
+      <div class="calculator-results">
+        <div class="result-box">
+          <span class="result-label">Waktu Rekonsiliasi Kas Hemat</span>
+          <span class="result-number" id="res-waktu">30 Jam / Bulan</span>
+          <p class="result-explanation">BobKasir menghitung penutupan shift (X/Z Report) secara instan, tidak perlu hitung manual lagi setiap malam.</p>
+        </div>
+        <div class="result-box border-top">
+          <span class="result-label">Potensi Penghematan Kerugian Akibat Salah Hitung</span>
+          <span class="result-number" id="res-rugi">Rp 450.000 / Bulan</span>
+          <p class="result-explanation">Dengan akurasi input produk, hitungan diskon otomatis, dan split bill presisi dari BobKasir.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="harga" class="pricing">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Harga Transparan untuk Semua Kedai</h2>
+        <p class="section-subtitle">Tanpa biaya pendaftaran tersembunyi. Mulai dengan uji coba gratis 7 hari untuk mengakses seluruh fitur premium.</p>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Plan 1: Trial -->
+        <div class="pricing-card">
+          <div class="card-header-plan">
+            <span class="plan-name">Uji Coba</span>
+            <div class="plan-price">Rp 0</div>
+            <span class="plan-duration">Gratis selama 7 hari</span>
+          </div>
+          <div class="card-body-plan">
+            <ul class="plan-features">
+              <li>✓ Akses penuh seluruh fitur POS</li>
+              <li>✓ Support multi-device aktif</li>
+              <li>✓ Integrasi Printer Bluetooth</li>
+              <li>✓ Kelola hingga 5 kasir</li>
+              <li>✗ Perpanjangan otomatis</li>
+            </ul>
+            <a href="#" class="btn btn-secondary full-width">Daftar Trial Gratis</a>
+          </div>
+        </div>
+
+        <!-- Plan 2: Weekly (Recommended/Popular) -->
+        <div class="pricing-card recommended">
+          <div class="pricing-badge-popular">PALING POPULER</div>
+          <div class="card-header-plan">
+            <span class="plan-name">Paket Mingguan</span>
+            <div class="plan-price">Rp 30.000<span>/ minggu</span></div>
+            <span class="plan-duration">Fleksibel untuk kedai baru</span>
+          </div>
+          <div class="card-body-plan">
+            <ul class="plan-features">
+              <li>✓ Akses penuh seluruh fitur POS</li>
+              <li>✓ Support multi-device tanpa batas</li>
+              <li>✓ Integrasi Printer & Cash Drawer</li>
+              <li>✓ Kelola kasir tanpa batas</li>
+              <li>✓ Pembayaran otomatis via Midtrans</li>
+              <li>✓ Support prioritas WhatsApp</li>
+            </ul>
+            <a href="#" class="btn btn-primary full-width">Pilih Paket Mingguan</a>
+          </div>
+        </div>
+
+        <!-- Plan 3: Monthly -->
+        <div class="pricing-card">
+          <div class="card-header-plan">
+            <span class="plan-name">Paket Bulanan</span>
+            <div class="plan-price">Rp 100.000<span>/ bulan</span></div>
+            <span class="plan-duration">Hemat dibanding mingguan</span>
+          </div>
+          <div class="card-body-plan">
+            <ul class="plan-features">
+              <li>✓ Akses penuh seluruh fitur POS</li>
+              <li>✓ Support multi-device tanpa batas</li>
+              <li>✓ Integrasi Printer & Cash Drawer</li>
+              <li>✓ Kelola kasir tanpa batas</li>
+              <li>✓ Pembayaran otomatis via Midtrans</li>
+              <li>✓ Support prioritas WhatsApp</li>
+              <li>✓ Backup database bulanan otomatis</li>
+            </ul>
+            <a href="#" class="btn btn-secondary full-width">Pilih Paket Bulanan</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="grace-period-notice">
+        <p>💡 <strong>Informasi Grace Period:</strong> Jika langganan Anda habis, kami memberikan waktu dispensasi (grace period) selama 1 hari sebelum fitur transaksi dikunci agar operasional kedai Anda tidak terganggu mendadak.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer Section -->
+  <footer class="footer">
+    <div class="container footer-container">
+      <div class="footer-brand">
+        <div class="logo">
+          <span class="logo-icon">🍵</span>
+          <span class="logo-text">Bob<span>Kasir</span></span>
+        </div>
+        <p class="footer-desc">Solusi aplikasi Point of Sale (POS) terbaik untuk mengoptimalkan operasional dan pengelolaan kasir kedai secara handal, aman, dan efisien.</p>
+        <p class="company-tag">Dibuat dengan bangga oleh <strong>StarCyberCompany</strong></p>
+      </div>
+      
+      <div class="footer-links-grid">
+        <div class="footer-col">
+          <h4>Fitur</h4>
+          <a href="#fitur">Offline Mode</a>
+          <a href="#fitur">Split Bill</a>
+          <a href="#fitur">Printer Bluetooth</a>
+          <a href="#fitur">Dashboard Analitik</a>
+        </div>
+        <div class="footer-col">
+          <h4>Perusahaan</h4>
+          <a href="#">Tentang Kami</a>
+          <a href="#">Hubungi Kami</a>
+          <a href="#">Syarat & Ketentuan</a>
+          <a href="#">Kebijakan Privasi</a>
+        </div>
+        <div class="footer-col">
+          <h4>Hubungi StarCyberCompany</h4>
+          <p>Email: support@starcybercompany.com</p>
+          <p>WhatsApp: +62 812-3456-7890</p>
+          <p>Alamat: Jakarta, Indonesia</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container footer-bottom-container">
+        <p>&copy; 2026 BobKasir. All rights reserved. Powered by StarCyberCompany.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script -->
+  <script src="app.js"></script>
+</body>
+</html>
