@@ -37,7 +37,7 @@ Target platform: Android & iOS (deploy ke Play Store & App Store). Aplikasi haru
 | Database | MySQL |
 | Testing lokal | Laragon + phpMyAdmin |
 | Email | Gmail SMTP (verifikasi email, reset sandi, notifikasi) |
-| Pembayaran langganan | Midtrans (semua metode pembayaran) |
+| Pembayaran langganan | RevenueCat (Google Play / App Store In-App Purchases) |
 | Login sosial | Google Sign-In |
 | Cetak struk | Bluetooth printer (ESC/POS) |
 | Push notification | Firebase Cloud Messaging (FCM) — Android & iOS |
@@ -107,7 +107,7 @@ Aturan verifikasi email saat login:
 - **Trial 7 hari gratis** akses semua fitur.
 - Setelah 7 hari: akses fitur penuh diblokir, hanya fitur dasar yang bisa dipakai. Wajib berlangganan untuk lanjut.
 - Pilihan paket: **per minggu** atau **per bulan**.
-- Pembayaran: manual (konfirmasi) atau otomatis via Midtrans (semua metode).
+- Pembayaran: In-App Purchases via RevenueCat (otomatis terhubung dengan Apple/Google akun pengguna).
 
 ---
 
@@ -248,11 +248,10 @@ Saat membuat/edit produk:
 
 ### 9.2 Langganan (owner only)
 - Lihat status langganan aktif (paket, mulai, berakhir).
-- Upgrade / downgrade paket (mingguan ↔ bulanan).
+- Upgrade / downgrade paket (mingguan ↔ bulanan) dikelola langsung oleh platform (iOS/Android) via RevenueCat.
 - Bayar:
-  - Manual (konfirmasi ke sistem / admin StarCyberCompany).
-  - Otomatis via Midtrans (semua metode pembayaran).
-- Auto-renewal opsional: setelah bayar sukses, sistem otomatis perpanjang/upgrade langganan sesuai paket.
+  - Otomatis via RevenueCat In-App Purchases.
+- Auto-renewal: ditangani oleh Apple/Google Subscription system.
 - Jika langganan kedaluwarsa/tidak diperpanjang: blokir fitur penuh, hanya fitur dasar (lihat riwayat read-only & pengaturan akun sendiri) yang bisa dipakai.
 
 ### 9.3 Printer Struk Bluetooth & Cash Drawer
@@ -320,15 +319,15 @@ Saat membuat/edit produk:
 
 ---
 
-## 13. Pembayaran Langganan (Midtrans)
+## 13. Pembayaran Langganan (RevenueCat)
 
-- Semua metode pembayaran Midtrans (VA, e-wallet, card, QRIS, retail).
+- Pembayaran menggunakan standar platform: Google Play Billing (Android) & Apple In-App Purchases (iOS).
 - Flow:
-  1. Owner pilih paket (mingguan/bulanan) di halaman langganan.
-  2. Pilih metode → redirect / Snap popup.
-  3. Midtrans webhook → server Laravel → update status langganan.
-  4. Sukses → aktifkan/panjangkan langganan otomatis.
-- Manual payment: owner upload bukti / konfirmasi, admin StarCyberCompany validasi manual.
+  1. Owner melihat _paywall_ (halaman langganan) dengan *offerings* (mingguan/bulanan) dari RevenueCat.
+  2. Owner tap "Beli" → Muncul popup sistem Apple/Google.
+  3. Konfirmasi via sidik jari / FaceID / sandi.
+  4. Aplikasi menerima event sukses dari RevenueCat SDK dan membuka akses *premium*.
+  5. Backend Laravel bisa menerima *webhook* opsional dari RevenueCat untuk mencatat riwayat di server.
 
 ---
 
@@ -415,7 +414,7 @@ Berikut fitur/tambahan yang sebaiknya dipertimbangkan (belum eksplisit diminta, 
 - [ ] Splash screen tampil logo + versi + StarCyberCompany.
 - [ ] Register owner (email verif & Google) jalan.
 - [ ] Login owner wajib verif email (kecuali Google).
-- [ ] Popup trial 7 hari + paket mingguan/bulanan via Midtrans.
+- [ ] Popup trial 7 hari + paket mingguan/bulanan via RevenueCat.
 - [ ] Kasir: katalog → keranjang → openbill/reservasi/checkout → bayar → struk (customer & dapur, berulang).
 - [ ] Openbill: simpan, recall, hapus manual, auto-close saat checkout.
 - [ ] Reservasi: buat, konversi ke order, batalkan.
@@ -428,8 +427,8 @@ Berikut fitur/tambahan yang sebaiknya dipertimbangkan (belum eksplisit diminta, 
 - [ ] Multi-device & responsif (handset & tablet).
 - [ ] Gmail SMTP untuk verif & reset sandi.
 - [ ] Push notifikasi FCM: request cancel, langganan expiring, pembayaran sukses/gagal.
-- [ ] Midtrans untuk pembayaran langganan (semua metode). Webhook retry 3x jika gagal.
-- [ ] Grace period 1 hari setelah expired sebelum fitur diblokir.
+- [ ] RevenueCat untuk pembayaran langganan (In-App Purchases).
+- [ ] Grace period diatur oleh kebijakan Apple/Google Play (biasanya otomatis).
 - [ ] Downgrade paket: tidak berlaku di tengah periode aktif, queue ke paket berikutnya.
 - [ ] Cash drawer on/off + trigger saat checkout (jika on & printer dukung).
 - [ ] Printer Bluetooth umum (ESC/POS) didukung.
@@ -455,7 +454,7 @@ Berikut fitur/tambahan yang sebaiknya dipertimbangkan (belum eksplisit diminta, 
         ├── OrderController       (transaksi, openbill, reservasi, cancel)
         ├── ReportController      (dashboard, export)
         ├── UserController        (kelola role & akun sendiri)
-        ├── SubscriptionController (langganan & Midtrans webhook)
+        ├── SubscriptionController (langganan & RevenueCat webhook)
         └── PrintConfigController (setting struk)
         │
         └── MySQL (data persistent)
@@ -517,7 +516,7 @@ Berikut fitur/tambahan yang sebaiknya dipertimbangkan (belum eksplisit diminta, 
 - `id`, `order_id`, `requester_user_id`, `reason`, `status` (pending/approved/rejected), `approved_by`, `created_at`, `updated_at`
 
 ### 22.9 subscriptions
-- `id`, `tenant_id`, `package` (weekly/monthly), `start_date`, `end_date`, `status`, `payment_method`, `midtrans_order_id`, `manual_proof`, `created_at`, `updated_at`
+- `id`, `tenant_id`, `package` (weekly/monthly), `start_date`, `end_date`, `status`, `revenuecat_entitlement_id`, `original_transaction_id`, `created_at`, `updated_at`
 
 ### 22.10 receipt_settings
 - `id`, `tenant_id`, `shop_name`, `shop_address`, `footer_text`, `wifi_password`, `paper_width` (58/80), `logo_url`, `cash_drawer_enabled`
@@ -581,10 +580,7 @@ Berikut fitur/tambahan yang sebaiknya dipertimbangkan (belum eksplisit diminta, 
 
 ### Subscriptions
 - `GET /subscriptions/current`
-- `POST /subscriptions/checkout` (Midtrans)
-- `POST /subscriptions/manual` (upload bukti)
-- `POST /subscriptions/webhook/midtrans`
-- `POST /subscriptions/cancel`
+- `POST /subscriptions/webhook/revenuecat` (opsional untuk sinkronisasi DB lokal dengan RevenueCat)
 
 ### Openbills
 - `GET /openbills` — daftar openbill aktif tenant
@@ -660,8 +656,8 @@ Berikut fitur/tambahan yang sebaiknya dipertimbangkan (belum eksplisit diminta, 
 ### Renewal / Upgrade / Downgrade
 - Bayar paket yang sama = perpanjang dari tanggal expired (atau sekarang jika sudah lewat).
 - **Upgrade** (mingguan → bulanan): durasi baru = now + 30 hari (menimpa sisa waktu lama).
-- **Downgrade** (bulanan → mingguan): tidak bisa downgrade di tengah periode aktif. Baru berlaku setelah periode aktif habis (queue ke paket berikutnya).
-- Midtrans webhook failure: server retry otomatis 3x dalam 1 jam. Jika masih gagal, kirim email notifikasi ke owner + flag manual review.
+- **Downgrade** (bulanan → mingguan): dikelola otomatis oleh Google/Apple Store (prorata atau mulai di siklus berikutnya).
+- RevenueCat webhook opsional untuk backup data, *source of truth* ada di SDK RevenueCat di dalam aplikasi.
 
 ### Owner Hapus Akun
 - Owner hapus akun = hapus tenant beserta semua data (user, produk, order, dll).
