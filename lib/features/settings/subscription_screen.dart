@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/providers/app_providers.dart';
-import '../../core/repositories/subscription_repository.dart';
-import '../../core/services/api_client.dart';
+import '../../core/services/revenuecat_service.dart';
 import '../../widgets/app_button.dart';
 
 class SubscriptionScreen extends ConsumerStatefulWidget {
@@ -17,62 +16,43 @@ class SubscriptionScreen extends ConsumerStatefulWidget {
 }
 
 class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen> {
-  String? _selectedPackage;
+  List<Package> _packages = [];
+  Package? _selectedPackage;
   bool _loading = false;
+  bool _fetchingPackages = true;
 
-  Future<void> _checkout() async {
-    if (_selectedPackage == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Pilih paket terlebih dahulu')));
-      return;
-    }
-    setState(() => _loading = true);
-    try {
-      final data = await ref.read(subscriptionRepositoryProvider).checkout(_selectedPackage!);
-      final redirectUrl = data['data']?['redirect_url'] as String?;
-      if (mounted && redirectUrl != null) {
-        final uri = Uri.parse(redirectUrl);
-        if (await canLaunchUrl(uri)) {
-          await launchUrl(uri, mode: LaunchMode.externalApplication);
-        } else {
-          if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Tidak bisa membuka: $redirectUrl')));
-        }
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(ApiClient.parseError(e))));
-      }
-    } finally {
-      if (mounted) setState(() => _loading = false);
+  @override
+  void initState() {
+    super.initState();
+    _fetchPackages();
+  }
+
+  Future<void> _fetchPackages() async {
+    final pkgs = await RevenueCatService.getOfferings();
+    if (mounted) {
+      setState(() {
+        _packages = pkgs;
+        if (pkgs.isNotEmpty) _selectedPackage = pkgs.first;
+        _fetchingPackages = false;
+      });
     }
   }
 
-  Future<void> _manualPayment() async {
-    if (_selectedPackage == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Pilih paket terlebih dahulu')));
-      return;
-    }
+  Future<void> _checkout() async {
+    if (_selectedPackage == null) return;
+    
     setState(() => _loading = true);
     try {
-      final data = await ref.read(subscriptionRepositoryProvider).manualPayment(_selectedPackage!);
+      final success = await RevenueCatService.purchasePackage(_selectedPackage!);
       if (mounted) {
-        final info = data['data'];
-        showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-            title: const Text('Transfer Manual'),
-            content: Text(info?.toString() ?? 'Ikuti instruksi yang dikirim ke email Anda.'),
-            actions: [TextButton(onPressed: () => Navigator.pop(context), child: const Text('OK'))],
-          ),
-        );
+        if (success) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Pembayaran berhasil!')));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Pembayaran gagal atau dibatalkan.')));
+        }
       }
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(ApiClient.parseError(e))));
-      }
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -130,32 +110,27 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen> {
             const SizedBox(height: AppSpacing.s6),
             const Text('Pilih Paket', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
             const SizedBox(height: AppSpacing.s4),
-            _PackageCard(
-              title: 'Mingguan',
-              price: 'Rp 25.000 / minggu',
-              desc: '7 hari akses penuh',
-              selected: _selectedPackage == 'weekly',
-              onSelect: () => setState(() => _selectedPackage = 'weekly'),
-            ),
-            const SizedBox(height: AppSpacing.s3),
-            _PackageCard(
-              title: 'Bulanan',
-              price: 'Rp 79.000 / bulan',
-              desc: '30 hari akses penuh',
-              isRecommended: true,
-              selected: _selectedPackage == 'monthly',
-              onSelect: () => setState(() => _selectedPackage = 'monthly'),
-            ),
+            
+            if (_fetchingPackages)
+               const Center(child: CircularProgressIndicator())
+            else if (_packages.isEmpty)
+               const Text('Belum ada paket yang tersedia', style: TextStyle(color: AppColors.onSurface2))
+            else
+               ..._packages.map((pkg) => Padding(
+                 padding: const EdgeInsets.only(bottom: AppSpacing.s3),
+                 child: _PackageCard(
+                   title: pkg.storeProduct.title,
+                   price: pkg.storeProduct.priceString,
+                   desc: pkg.storeProduct.description,
+                   selected: _selectedPackage?.identifier == pkg.identifier,
+                   onSelect: () => setState(() => _selectedPackage = pkg),
+                 ),
+               )),
+
             const SizedBox(height: AppSpacing.s6),
             AppButton(
-              label: _loading ? 'Memproses...' : 'Bayar via Midtrans',
-              onPressed: _loading ? null : _checkout,
-            ),
-            const SizedBox(height: AppSpacing.s3),
-            AppButton(
-              label: _loading ? 'Memproses...' : 'Konfirmasi Manual',
-              variant: AppButtonVariant.secondary,
-              onPressed: _loading ? null : _manualPayment,
+              label: _loading ? 'Memproses...' : 'Berlangganan via Google Play',
+              onPressed: _loading || _packages.isEmpty ? null : _checkout,
             ),
           ],
         ),
@@ -168,7 +143,6 @@ class _PackageCard extends StatelessWidget {
   final String title;
   final String price;
   final String desc;
-  final bool isRecommended;
   final bool selected;
   final VoidCallback onSelect;
 
@@ -176,14 +150,13 @@ class _PackageCard extends StatelessWidget {
     required this.title,
     required this.price,
     required this.desc,
-    this.isRecommended = false,
     this.selected = false,
     required this.onSelect,
   });
 
   @override
   Widget build(BuildContext context) {
-    final highlight = selected || isRecommended;
+    final highlight = selected;
     return GestureDetector(
       onTap: onSelect,
       child: Container(
@@ -191,24 +164,14 @@ class _PackageCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: highlight ? AppColors.primaryLight : AppColors.surface,
           border: Border.all(
-            color: selected ? AppColors.primary : isRecommended ? AppColors.primary : AppColors.surface3,
+            color: selected ? AppColors.primary : AppColors.surface3,
             width: highlight ? 2 : 1,
           ),
           borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
         ),
         child: Row(children: [
           Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Row(children: [
-              Text(title, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16)),
-              if (isRecommended) ...[
-                const SizedBox(width: 8),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                  decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(999)),
-                  child: const Text('Hemat', style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w700)),
-                ),
-              ],
-            ]),
+            Text(title, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16)),
             const SizedBox(height: 2),
             Text(desc, style: const TextStyle(color: AppColors.onSurface2, fontSize: 13)),
           ])),

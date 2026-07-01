@@ -12,6 +12,8 @@ import '../repositories/user_repository.dart';
 import '../repositories/report_repository.dart';
 import '../repositories/receipt_setting_repository.dart';
 import '../repositories/notification_repository.dart';
+import '../services/revenuecat_service.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import '../database/database.dart';
 import '../services/sync_service.dart';
 import '../services/api_client.dart';
@@ -156,25 +158,33 @@ class SubscriptionState {
   bool get hasFullAccess =>
       status == SubscriptionStatus.trial || status == SubscriptionStatus.active;
 
-  factory SubscriptionState.fromTenant(TenantInfo? tenant) {
-    if (tenant == null) {
+  factory SubscriptionState.fromCustomerInfo(CustomerInfo? info) {
+    if (info == null) {
       return const SubscriptionState(status: SubscriptionStatus.trial);
     }
-    final status = switch (tenant.subscriptionStatus) {
-      'active' => SubscriptionStatus.active,
-      'expired' => SubscriptionStatus.expired,
-      _ => SubscriptionStatus.trial,
-    };
-    return SubscriptionState(
-      status: status,
-      expiresAt: tenant.subscriptionExpiresAt ?? tenant.trialUntil,
-    );
+    final entitlement = info.entitlements.all['premium'];
+    if (entitlement != null && entitlement.isActive) {
+      return SubscriptionState(
+        status: SubscriptionStatus.active,
+        expiresAt: entitlement.expirationDate != null ? DateTime.tryParse(entitlement.expirationDate!) : null,
+        package: entitlement.productIdentifier,
+      );
+    }
+    return const SubscriptionState(status: SubscriptionStatus.expired);
   }
 }
 
+final customerInfoProvider = StreamProvider<CustomerInfo>((ref) {
+  return RevenueCatService.customerInfoStream;
+});
+
 final subscriptionProvider = Provider<SubscriptionState>((ref) {
-  final user = ref.watch(currentUserProvider);
-  return SubscriptionState.fromTenant(user?.tenant);
+  final customerInfoAsync = ref.watch(customerInfoProvider);
+  return customerInfoAsync.when(
+    data: (info) => SubscriptionState.fromCustomerInfo(info),
+    loading: () => const SubscriptionState(status: SubscriptionStatus.trial),
+    error: (err, stack) => const SubscriptionState(status: SubscriptionStatus.trial),
+  );
 });
 
 // ─── Users (owner only) ───────────────────────────────────────────────────────

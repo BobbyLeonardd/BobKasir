@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "459189186719",
+    "project_id": "bobkasir-b660a",
+    "storage_bucket": "bobkasir-b660a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:459189186719:android:652aa5fcbf41ea841272aa",
+        "android_client_info": {
+          "package_name": "com.starcybercompany.bobkasir"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "459189186719-peenaec4umqavfo76hvs41bhsdh1jol8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.starcybercompany.bobkasir",
+            "certificate_hash": "ff7e0dc0d8bb559714702d71628d360e45955254"
+          }
+        },
+        {
+          "client_id": "459189186719-dbd1ic4hj4af2emtarc12etb0qm33dhh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBozt0etdSg-L0iiIyjHQ1CH4-PD2s3I4k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "459189186719-dbd1ic4hj4af2emtarc12etb0qm33dhh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

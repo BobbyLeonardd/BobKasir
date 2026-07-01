@@ -4,7 +4,14 @@ import 'core/theme/app_theme.dart';
 import 'core/providers/app_providers.dart';
 import 'core/router/app_router.dart';
 
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+
+import 'core/services/revenuecat_service.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  await RevenueCatService.init();
   runApp(const ProviderScope(child: BobKasirApp()));
 }
 
